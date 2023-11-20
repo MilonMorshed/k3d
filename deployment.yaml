@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: myapp
-        image: demo-registry:57430/nginx
+        image: k3d-my-registry:49716/mynginx
         resources:
           limits:
             memory: "128Mi"
