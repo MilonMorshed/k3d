@@ -48,4 +48,10 @@ cat $HOME/.kube/config | grep -i dev
 kubectl get nodes
 kubectl get pods
 kubectl get ns
+# To see the traefik ,metric server info
+kubectl get deployment.apps -n kube-system
+# To run the application 
+kubectl apply -f deployment.yaml
+
+
 
