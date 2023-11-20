@@ -1,0 +1,4 @@
+registries:
+  create: #same as `--registry-create demo-registry`
+    name: demo-registry # default image docker.io/library/registry:2
+    host: "0.0.0.0"
