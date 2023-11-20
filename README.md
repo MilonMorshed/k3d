@@ -16,6 +16,19 @@ you can create a registry like this and use the registry for your images.
 # You can now use the registry like this (example):
 # 1. create a new cluster that uses this registry
 k3d cluster create --registry-use k3d-my-registry:49716
+kubectl config use-context k3d-dev
+kubectle cluster-info
+kubectx k3d-dev
+kubectl get namespaces
+
+# ALB --> INGRESS CONTROLLER --> SERVICE ---> DEPLOYMENT(RS) --->PODS -----> CONTAINERS
+# ALB / INGRESS CONTROLLER ALWAYS EXPOSE OUTSIDE OF WORLDS
+# SERVICE ALWAYS EXPOSE INTERNALLY IN THE CLUSTER.
+
+
+
+
+
 
 # 2. tag an existing local image to be pushed to the registry
 docker tag nginx:latest k3d-my-registry:49716/mynginx:v0.1
@@ -52,6 +65,8 @@ kubectl get ns
 kubectl get deployment.apps -n kube-system
 # To run the application 
 kubectl apply -f deployment.yaml
-
+# deployment -> pods -> each pod has one container in it.
+# Ingress --> Seervice --> Deployment --> Pods --> Containers
+# Docker does not know how to talk to your local machine.
 
 
