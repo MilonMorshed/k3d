@@ -3,3 +3,6 @@ registries:
     name: my-registry # default image docker.io/library/registry:2
     host: "0.0.0.0"
     hostPort: 6500
+
+ 
+##  k3d registry create my-registry

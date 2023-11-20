@@ -10,12 +10,12 @@ how to administer the k3d
 
 - before you create a k3d cluster you have to start docker deamon first.
 
-- k3d registry create demo-registry
+- k3d registry create my-registry
 you can create a registry like this and use the registry for your images.
 
 # You can now use the registry like this (example):
 # 1. create a new cluster that uses this registry
-k3d cluster create --registry-use k3d-my-registry:49716
+k3d cluster create --registry-use k3d-my-registry:49552 
 kubectl config use-context k3d-dev
 kubectle cluster-info
 kubectx k3d-dev
@@ -25,12 +25,7 @@ kubectl get namespaces
 # ALB / INGRESS CONTROLLER ALWAYS EXPOSE OUTSIDE OF WORLDS
 # SERVICE ALWAYS EXPOSE INTERNALLY IN THE CLUSTER.
 
-
-
-
-
-
-# 2. tag an existing local image to be pushed to the registry
+ #2. tag an existing local image to be pushed to the registry
 docker tag nginx:latest k3d-my-registry:49716/mynginx:v0.1
 
 ## # Added by docker Desktop. To allow the same kube context to work on the host and the container
@@ -54,10 +49,10 @@ docker ps -f name=k3d-my-registry  (that will give detail about your registry)
 
 Creating cluster in command line like this below
 
-k3d cluster create dev --registry-use k3d-my-registry --server 2 --agent 3 
+# k3d cluster create dev --registry-use k3d-my-registry:49552 --servers 2 --agents 2
 
 when you create a cluster you will have $HOME/.kube/config file . you can talk to api server 
-cat $HOME/.kube/config | grep -i dev
+# cat $HOME/.kube/config | grep -i dev
 kubectl get nodes
 kubectl get pods
 kubectl get ns

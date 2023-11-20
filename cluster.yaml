@@ -16,8 +16,9 @@ ports:
       - loadbalancer
 registries:
   create: #same as `--registry-create demo-registry`
-   # name: demo-registry
-    # host: "0.0.0.0"
+    name: my-registry
+    host: "0.0.0.0"
+    hostPort: "6500"
 #   use:
 #     - k3d-demo-registry:59174
 options:
