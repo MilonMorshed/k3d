@@ -1,0 +1,35 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: dev
+# k3d cluster create youtube --api-port 6445 --servers 1 --agents 2 -p "80:80@loadbalacer"
+servers: 2 # same as `--servers 1`
+agents: 2 # same as `--agents 2`, before k3d used to call them worker nodes
+kubeAPI:
+  host: "localhost"
+  hostIP: "127.0.0.1"
+  hostPort: "6445"
+image: docker.io/rancher/k3s:v1.21.5-k3s1
+ports:
+  - port: 80:80 # same as `--port '80:80@loadbalancer'`
+    nodeFilters:
+      - loadbalancer
+registries:
+  create: #same as `--registry-create demo-registry`
+    name: demo-registry
+    # host: "0.0.0.0"
+#   use:
+#     - k3d-demo-registry:59174
+options:
+  k3d:
+    wait: true # wait for cluster to be usable ; same as `--wait` (default: true)
+    timeout: "60s" # wait timeout before aborting; same as `--timeout 60s`
+    disableLoadbalancer: false # same as `--no-lb`
+    loadbalancer:
+      configOverrides:
+        - settings.workerConnections=2048
+  kubeconfig:
+    updateDefaultKubeconfig: true
+    switchCurrentContext: true
+  # runtime: # runtime (docker) specific options
+  #   gpuRequest: all # same as `--gpus all`
