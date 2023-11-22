@@ -1,7 +1,7 @@
 apiVersion: k3d.io/v1alpha5
 kind: Simple
 metadata:
-  name: dev
+  name: dev-cluster
 # k3d cluster create youtube --api-port 6445 --servers 1 --agents 2 -p "80:80@loadbalacer"
 servers: 1 # same as `--servers 1`
 agents: 2 # same as `--agents 2`, before k3d used to call them worker nodes
@@ -15,12 +15,12 @@ ports:
     nodeFilters:
       - loadbalancer
 registries:
-  create: #same as `--registry-create demo-registry`
-    name: mydemo-registry
-    host: "0.0.0.0"
-    hostPort: "6500"
-  #use:
-   # - k3d-my-registry:59174
+  #create: #same as `--registry-create demo-registry`
+   # name: my-registry
+   # host: "0.0.0.0"
+   #hostPort: "6500"
+  use:
+    - k3d-my-registry:49552
 options:
   k3d:
     wait: true # wait for cluster to be usable ; same as `--wait` (default: true)
@@ -34,3 +34,5 @@ options:
     switchCurrentContext: true
   # runtime: # runtime (docker) specific options
   #   gpuRequest: all # same as `--gpus all`
+
+

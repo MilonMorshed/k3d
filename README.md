@@ -16,6 +16,8 @@ you can create a registry like this and use the registry for your images.
 # You can now use the registry like this (example):
 # 1. create a new cluster that uses this registry
 k3d cluster create --registry-use k3d-my-registry:49552 
+If you want to create a cluster by using config file like cluster.yaml/registry.yaml
+# k3d cluster create -c cluster.yaml --registry-config registry.yaml
 kubectl config use-context k3d-dev
 kubectle cluster-info
 kubectx k3d-dev
@@ -56,12 +58,16 @@ when you create a cluster you will have $HOME/.kube/config file . you can talk t
 kubectl get nodes
 kubectl get pods
 kubectl get ns
-# To see the traefik ,metric server info
-kubectl get deployment.apps -n kube-system
+To see the traefik ,metric server info
+## kubectl get deployment.apps -n kube-system
+
 # To run the application 
 kubectl apply -f deployment.yaml
 # deployment -> pods -> each pod has one container in it.
 # Ingress --> Seervice --> Deployment --> Pods --> Containers
 # Docker does not know how to talk to your local machine.
 
+k3d cluster start dev
+k3d cluster start stage
+k3d cluster start prod
 

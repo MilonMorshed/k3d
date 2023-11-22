@@ -1,0 +1,16 @@
+apiVersion: k3d.io/v1alpha5
+kind: Simple
+metadata:
+  name: prod-cluster
+# k3d cluster create youtube --api-port 6445 --servers 1 --agents 2 -p "80:80@loadbalacer"
+servers: 1 # same as `--servers 1`
+agents: 2 # same as `--agents 2`, before k3d used to call them worker nodes
+kubeAPI:
+  host: "localhost"
+  hostIP: "127.0.0.1"
+  hostPort: "6447"
+image: docker.io/rancher/k3s:v1.21.5-k3s1
+ports:
+  - port: 82:82 # same as `--port '80:80@loadbalancer'`
+    nodeFilters:
+      - loadbalancer
