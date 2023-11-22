@@ -16,11 +16,11 @@ ports:
       - loadbalancer
 registries:
   create: #same as `--registry-create demo-registry`
-    name: mydemo-registry
+    name: my-registry
     host: "0.0.0.0"
     hostPort: "6500"
-  #use:
-   # - k3d-my-registry:59174
+  use:
+    - k3d-my-registry:59174
 options:
   k3d:
     wait: true # wait for cluster to be usable ; same as `--wait` (default: true)
