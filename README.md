@@ -64,10 +64,32 @@ To see the traefik ,metric server info
 # To run the application 
 kubectl apply -f deployment.yaml
 # deployment -> pods -> each pod has one container in it.
-# Ingress --> Seervice --> Deployment --> Pods --> Containers
+# Ingress --> Service --> Deployment --> Pods --> Containers
 # Docker does not know how to talk to your local machine.
 
 k3d cluster start dev
 k3d cluster start stage
 k3d cluster start prod
+
+k3d kubeconfig get dev-cluster
+curl -v telnet://localhost:6445  
+
+# To set permanent bash aliases change this file ~/.bash_aliases
+
+k get all -n kube-system 
+k get po -o wide -n kube-system
+
+alias k='kubectl'
+alias kc='k config view --minify | grep name'
+alias kdp='kubectl describe pod'
+alias c='clear'
+alias kd='kubectl describe pod'
+alias ke='kubectl explain'
+alias kf='kubectl create -f'
+alias kg='kubectl get pods --show-labels'
+alias kr='kubectl replace -f'
+alias ks='kubectl get namespaces'
+alias l='ls -lrt'
+alias kga='k get pod --all-namespaces'
+alias kgaa='kubectl get all --show-labels'
 
