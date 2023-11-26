@@ -12,16 +12,32 @@ how to administer the k3d
 open -a docker ( If you using docker desktop)
 k3d cluster list
 k3d cluster start dev-cluster
+kubetle cluster-info
+curl -v telnet://localhost:6445 
+k3d kubeconfig get dev-cluster
+
 k get nodes
 k get ns
 docker ps 
-curl -v telnet://localhost:6445
-k3d kubeconfig get dev-cluster
 k get all
 k get all -n kube-system
 k get all -o wide  -n kube-system
 k get po -o wide -n kube-system -v=8
 k api-resources  # to see the api version when write menifest files.
+k apply -f my-ns.yaml
+## difference between create/update and apply 
+k get ns
+
+k describe ns my-ns
+# To see yaml format
+k get ns my-ns -o yaml
+k get all -n my-ns 
+k get all
+k get all --all-namespaces
+k get all -A
+k get pods -A
+kgaa
+
 ------
 
 ** A kubernetes object is a "record of intent" - once you create a the object,Kubernetes system constantly work to ensure
@@ -32,7 +48,7 @@ k api-resources  # to see the api version when write menifest files.
 
 ** Namespaces as a virtual cluster inside your kubernetes cluster.they are all ligically isolated from each other.
    Namsespaces used for isolation.
-   -- By default there are three namespaces will be created like default,kube-system,kube-public and also kube-node-lease
+   -- By default there are four namespaces will be created like default,kube-system,kube-public and also kube-node-lease
    -- resource quota.
 ** Create / Update /Delete/Read any k8s Resource /Object we can use kubectl(cli) --> Imperative approch. And Declarative approch
    ----> create a menifest files.
