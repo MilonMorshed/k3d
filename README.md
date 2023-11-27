@@ -7,7 +7,7 @@ How to create a kubernetes cluster in local machine using cli.
 How to create registy locally
 How to run your application on a multi cluster locally
 how to administer the k3d
-
+# To communicate between Kubectl and k8s cluster ,we need 1.kube/config file and 2. network 
 --------------------------------------------
 open -a docker ( If you using docker desktop)
 k3d cluster list
@@ -36,6 +36,10 @@ k get all
 k get all --all-namespaces
 k get all -A
 k get pods -A
+k get deployments -A
+k get seervices -A
+k get pods -n my-ns
+
 kgaa
 
 ------
@@ -52,6 +56,59 @@ kgaa
    -- resource quota.
 ** Create / Update /Delete/Read any k8s Resource /Object we can use kubectl(cli) --> Imperative approch. And Declarative approch
    ----> create a menifest files.
+==============================================
+
+K8s     API / OBJECT / RESOURCES / WORKLOADS
+--------------------------------------------
+
+POD
+ReplicationController
+ReplicaSet
+Deployment
+StatefulSet
+
+Communication
+-------------
+
+Services :
+  ClusterIp
+  NodePort
+  Headless
+  LoadBalancer
+
+ NetworkPolicies 
+
+Storages :
+----------
+
+ PersistentVolume
+ PersistentVolumeClaim
+ StorageClass
+
+ RBAC (Role Based Access Control)
+ --------------------------------
+
+ Role
+ RoleBinding
+ ClusterRole
+ ClusterRoleBinding
+ ServiceAccount
+
+Scheduling and Maintence
+-------------------------
+
+Node Selector
+Node Affinity
+POD Affinity/AntiAffinity
+Taints and Tolerations
+Drain
+Cardon / UnCardon
+
+
+
+
+
+
 
 
 
