@@ -104,6 +104,15 @@ Taints and Tolerations
 Drain
 Cardon / UnCardon
 
+============================
+
+A Pod always runs on a Node. smallest building block . a pod represent a running process.
+- In side a pod , You can have one or more containers.
+
+# kubectl apply -f pod.yaml --dry-run=client
+# kubectl apply -f pod.yaml --dry-run=server (kubectl validate with api server)
+
+
 
 
 
