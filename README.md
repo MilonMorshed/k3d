@@ -17,7 +17,10 @@ curl -v telnet://localhost:6445
 k3d kubeconfig get dev-cluster
 
 k get nodes
+k describe node k3d-dev-cluster-server-0
+
 k get ns
+k get pod -o wide -n my-ns
 docker ps 
 k get all
 k get all -n kube-system
@@ -39,7 +42,11 @@ k get pods -A
 k get deployments -A
 k get seervices -A
 k get pods -n my-ns
-
+k describe pod my-pod -n my-ns 
+k exec -it my-pod -n my-ns -- sh 
+kubectl exec POD [-c CONTAINER] [-i] [-t] [flags] [-- COMMAND [args...]]
+k get pods --show labels -n my-ns
+k edit svc myservice -n my-ns -o yaml
 kgaa
 
 ------
@@ -105,6 +112,20 @@ Drain
 Cardon / UnCardon
 
 ============================
+Service :
+---------
+
+  - A service is make our pods discoverable inside the cluster Or exposing them to the internet
+  - When we create a service -
+      we get one virtual IP (Cluster IP) and it will get registered to the DNS(kube-dns).
+      After registering , other Pods can find and talk to the service by using service name.
+  - Service is a logical concept, real work done by kube-proxy on each node.
+  - Redirect Virtual IP to Pod IP.
+
+  -------------------
+       
+         
+
 
 A Pod always runs on a Node. smallest building block . a pod represent a running process.
 - In side a pod , You can have one or more containers.
@@ -113,14 +134,7 @@ A Pod always runs on a Node. smallest building block . a pod represent a running
 # kubectl apply -f pod.yaml --dry-run=server (kubectl validate with api server)
 
 
-
-
-
-
-
-
-
-
+----------------
 - before you create a k3d cluster you have to start docker deamon first.
 
 - k3d registry create my-registry
