@@ -1,13 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: myapp
+  name: nginxsvc
+  namespace: my-ns 
 spec:
   selector:
-    app: myapp
-  type: NodePort
+    app: my-pod
+  type: ClusterIP
   ports:
-  - protocol: TCP
-    port: 80
-    targetPort: 80
-    name: test-services
+  - name: http
+    port: 80 # service port
+    targetPort: 8080 # Container port
+  

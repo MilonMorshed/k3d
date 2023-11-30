@@ -122,6 +122,23 @@ Service :
   - Service is a logical concept, real work done by kube-proxy on each node.
   - Redirect Virtual IP to Pod IP.
 
+  - labels and selector has to be same.
+    k get pods --show-labels -n my-ns
+  - You can modify the labels in pod.yaml or you can modify the selector in service.yaml
+  - To edit the yaml file you can also do that by imperative approch. like 
+
+  k edit svc nginxsvc -n my-ns   
+
+  ------------
+  FQDN ? --> Fully Qualified Domain Name .
+  <serviceName>.<namespaceName>.svc.cluster.local
+  nginxsvc.my-ns.svc.cluster.local
+
+  curl -v testsvc.default.svc.cluster.local:8080
+  ---------
+  - cluster capacity ?
+  
+
   -------------------
        
          
