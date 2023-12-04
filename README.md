@@ -128,6 +128,7 @@ Service :
   - To edit the yaml file you can also do that by imperative approch. like 
 
   k edit svc nginxsvc -n my-ns   
+  k get ep -n my-ns
 
   ------------
   FQDN ? --> Fully Qualified Domain Name .
@@ -137,15 +138,97 @@ Service :
   curl -v testsvc.default.svc.cluster.local:8080
   ---------
   - cluster capacity ?
-  
+  - resources quota --> 
+        resources:
+          request:
+             cpu: 100m
+             memory: 200mi ;kubelet will check and Sum all the existing containers resources request
+             < Availalbe resources in the node. if not available pod get to pending state.
 
-  -------------------
+   - resource quota : Resource quota is just a limit how much resources can you use in a namespace.
+   - resource request : you can do it in Pod level.
+   20 Nodes , Each node 128 GB Ram,
+                          64 core cpu.
+   -------------------------------------------------------------
+
+   Pod Lifecycle
+   -------------
+   1. Make a pod request to API Server using local pod manifest file
+   2. The API server saves the info for the pod in ETCD.
+   3. The Scheduler finds the unscheduled pod and schedules it to node.
+   4. Kubelet running on the node,see  the pod scheduled and fires up docker.
+   5. Docker runs the container.
+   6. The entire lifecyle state of the pod is stored in ETCD.
+
+   -------
+   - Pod is ephemeral(last for very short time) and won't be rescheduled to a new node once it dies.
+     that's why you shouldn't directly create a pod instead of using controller like deployment,replicaSets
+     etc.
+     Pod should be created and managed by some controllers.
+
+     - ReplicationController
+     - ReplicaSet
+     - DeamonSet
+     - Deployments
+     - StatefulSet
+
+   Static Pods:
+   -----------
+    - Static pod are managed by the kubelet and API server does not have any control over the pods. The static pods running 
+      on a node are visible on the API server.There is no health check for the static pods.
+      kubelet is responsible to watch each static pod and restart the pod if it's get crashed.
+
+      kubectl scale rc <replicationControllerName> --replicas 3 -n my-ns -----> imperative approch.
+      kubectl run testpod --image=nginx --labels="app=nginx" --port=80 -n default --dry-run=client
+      kubectl run testpod --image=nginx --labels="app=nginx" --port=80 -n default --dry-run=client -o yaml
+      kubectl run testpod --image=nginx --labels="app=nginx" --port=80 -n default --dry-run=client -o yaml > testpod.yaml
+
+      ReplicaSet: ReplicaSet is next generation.ReplicaSet also create and manage pods and we can scale out the pods.
+                  Only defferance b/w rc and rs is in Selecter Support.
+                   - RC Supports only Equality Based Selector .Selector is not a mandatory.and 
+                     selector:
+                       app: nodeapp # Equality based 
+                   - RS Supports both Equality and Set (Expression )Based Selector.Selector is mandatory.
+                     selector:
+                       matchLabels:
+                         app: nodeapp # Equality based
+                     -------
+                     selector:
+                       matchExpression:  # set based 
+                       - key: app
+                         operator: In (operator)
+                         values:
+                         - "nodeapp"
+                         - "javaapp"    
+      
+
+
+    -------
+   - Pending (because it's not scheduled , Insufficent resources or some other cloud)
+   troubleshoot: kubectl describe pod <podName>.
+
+   - CrashLoopBackOff (Some reason your container process is not starting successfully because of some code 
+                       issue,configuration issue,application,images etc) contact with developer.
+                       may be correct the code or recreate the code or images.
+    troubleshoot: kubectl describe pod <podName>
+                  kubectl get pod -n ns 
+                  kubectl logs <podName> -c <containerName> 
+
+   - ImagePullBackOff / ErrorImagePull (Not able to pull the images. There is two reasons
+                  1.Wrong registry details ,if it is in private registry 2.Authentication problem)
+   - Running
+   - CreateContainerConfigError ( configMap ,secrete .You are reffering the configMap and secret in your 
+                  pod manifest file but you didn't create those or don't have those file in your cluster.)
+   - If the nodes are ready . We can check like 
+         - kubectl get nodes
+         - kubectl describe node <nodeName>. to see is there any memory or disk presures
+
+
+    -------------------------
        
          
-
-
 A Pod always runs on a Node. smallest building block . a pod represent a running process.
-- In side a pod , You can have one or more containers.
+- Inside a pod , You can have one or more containers.
 
 # kubectl apply -f pod.yaml --dry-run=client
 # kubectl apply -f pod.yaml --dry-run=server (kubectl validate with api server)
