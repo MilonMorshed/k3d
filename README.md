@@ -51,13 +51,12 @@ kgaa
 
 ------
 
-** A kubernetes object is a "record of intent" - once you create a the object,Kubernetes system constantly work to ensure
-   that object exist.
+** A kubernetes object is a "record of intent" - once you create a the object,Kubernetes system constantly work to ensure that object exist.
    -- To create or modify or delete them --You need to use kubernetes API. Object like POD,ReplicaSet,DaemonSet,Deploymentn
       Services etc. u can use kubectl or python or cli to communicate with api.
       These Objects are represent something in a cluster.
-
-** Namespaces as a virtual cluster inside your kubernetes cluster.they are all ligically isolated from each other.
+------
+** Namespaces as a virtual cluster inside your kubernetes cluster.they are all logically isolated from each other.
    Namsespaces used for isolation.
    -- By default there are four namespaces will be created like default,kube-system,kube-public and also kube-node-lease
    -- resource quota.
@@ -121,7 +120,7 @@ Service :
       After registering , other Pods can find and talk to the service by using service name.
   - Service is a logical concept, real work done by kube-proxy on each node.
   - Redirect Virtual IP to Pod IP.
-
+  - labels and selector are very imporant in creating svc . 
   - labels and selector has to be same.
     k get pods --show-labels -n my-ns
   - You can modify the labels in pod.yaml or you can modify the selector in service.yaml
@@ -183,8 +182,9 @@ Service :
       kubectl run testpod --image=nginx --labels="app=nginx" --port=80 -n default --dry-run=client -o yaml
       kubectl run testpod --image=nginx --labels="app=nginx" --port=80 -n default --dry-run=client -o yaml > testpod.yaml
 
-      ReplicaSet: ReplicaSet is next generation.ReplicaSet also create and manage pods and we can scale out the pods.
-                  Only defferance b/w rc and rs is in Selecter Support.
+      ReplicaSet: ReplicaSet is next generation.ReplicaSet also create and manage pods and we can scale out the pods. 
+      ----
+                  Only defferance b/w rc and rs is in Selecter Support.and version is different v1. apps/v1
                    - RC Supports only Equality Based Selector .Selector is not a mandatory.and 
                      selector:
                        app: nodeapp # Equality based 
@@ -199,11 +199,88 @@ Service :
                          operator: In (operator)
                          values:
                          - "nodeapp"
-                         - "javaapp"    
-      
+                         - "node" 
+                    template # and then specification for PODS
+      Still you can create a pod, delete manage the pod using RS/RC.
 
+  ---------
+  DeamonSet(DS):
+  -------------
+  RC / RS are the replica mode. You cann't scale your container directly.
+  A DaemonSet make sure that all or some kubernetes Nodes run a copy of a pod.
+  When a new node is added to the cluster , a Pod is added to it to mactch the rest of the node is removed from the cluster,
+  the pod is garbage collected.
+
+  DeamonSet is global mode like docker swarm. It is exactly like ReplicaSet only .Only difference is that it's not allow to have 
+  replicas fields in a manifest files. 
+
+  DaemonSet is used for agent based application like monitoring ,login agent ,logstash etc
+      
+  -----
+  taint:  <key> = <value>: <Effect>
+          node-role.kubernetes.io/master:NoSchedule
+
+          Effect has three option 1. NoSchedule 2. PreferNoSchedule 3. NoExecute 
+          toleration:
+          - key: node-role.kubernetes.io/master
+            operator: Exists or equal
+            effect: NoSchedule
+  toleration: 
+
+          You have to configure in pod spec lavel ;
+          tolerations: 
+          - key:
+            value:
+            effect:
+          containers:  
 
     -------
+
+    Deployments:
+    ------------
+     - Deployments is the recommended way to deploy Pod or rs
+     Key benefits of using Deployments:
+     -----------------------------------
+
+     - Deploy RS
+     - Update pods (PodTemplateSpec) zero downtime.
+     - Rolling to older Deployment version.
+     - Scale Deployment up or down.
+     - Pause and resume the deployment.
+     - Clean up older RS that you don't need any more.
+
+     -------
+
+     kubectl scale deployment [DEPLOYMENT_NAME] --replica[NUMBER_OF_REPLICAS]
+     k rollout status deployment nginx-deploment
+     k get deployment
+     k set image deployment nginx0deployment nginx-container=nginx:latest --record
+     k get replicaset
+     k rollout history deployment nginx-deployment
+     k rollout history deployment nginx-deployment --revision=1
+     k rollout undo deployment nginx-deployment --to-revision=1
+
+     Deployment create --> RS ---> RS will manage the pods
+     Deployment has two strategies: 
+            1. Recreate (when update it will terminate old pod and recreate the new pods.there will be a downtime)
+            2. Rolling Deployment(default deployment to k8s.It works very slow,one by one, There won't be any downtime)
+            First create new pods --> delete one old pod ---> give break for 30sec---> then create another.
+
+      HPA AND METRIC SERVER:
+      ---------------------
+      - HPA depends on metrics .HPA will communicate with the metric servier API and to  collect the info about
+      the CPU ,MEMORY utiliztion of POD .(has to install metrics server).
+      - Metric server will communicate with kubelet. Kubelet will provide the info to metric server.
+      - What is heapster and what is metric server? they both collect the values of resources. heapster 
+        is deprecated old version. Metric server is recommended . 
+
+      - kubectl top nodes
+      - kubectl top pods
+      - kubectl top pods -A --containers=true
+      - 
+      ----
+            
+
    - Pending (because it's not scheduled , Insufficent resources or some other cloud)
    troubleshoot: kubectl describe pod <podName>.
 

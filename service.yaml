@@ -5,7 +5,7 @@ metadata:
   namespace: my-ns 
 spec:
   selector:
-    app: my-pod
+    app: my-app
   type: NodePort
   ports:
   - name: http
