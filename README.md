@@ -308,7 +308,8 @@ Service :
      it will solve this .That is important to monitor because you  might to add more disk spaces )
    - Node does not have a sufficient memory
 
-
+   - kubectl k3d exec -it NODE_NAME /bin/sh
+   - k k3d exec
    - CrashLoopBackOff (Some reason your container process is not starting successfully because of some code 
                        issue,configuration issue,application,images etc) contact with developer.
                        may be correct the code or recreate the code or images.
