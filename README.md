@@ -130,7 +130,7 @@ Service :
   k get ep -n my-ns
 
   ------------
-  FQDN ? --> Fully Qualified Domain Name .
+  FQDN ? --> Fully Qualified Domain Name .When do You have to use FQDN?
   <serviceName>.<namespaceName>.svc.cluster.local
   nginxsvc.my-ns.svc.cluster.local
 
@@ -277,12 +277,37 @@ Service :
       - kubectl top nodes
       - kubectl top pods
       - kubectl top pods -A --containers=true
-      - 
+
+      ** resource request and limits when you create a containers.
+      - Resources Request: Minimum resources should be available.
+      - Resources Limits: Max resources can be used.
+      ** OOMkilled (out of memory killed).
+
+      ** Resource limits should be always greater or equal (>=)  than Resource Request.
+      Resources -----> Request and Limits
+       
       ----
-            
+      Deployment: It's recommend for State less Application. still you can make your deployment statefulSet
+      ----------
+                  by adding volume .
+      StatefulSet:
+      ------------
+       This is designed for deploying and managing Stateful Application like databases, 
+       jenkins,nexus,kafka,cluster etc.
+       - If you want to create StatefulSet in the same cluster . You need to svc type cluster IP.
+
+      -------------
+      volume: 
+      -------
+
+
 
    - Pending (because it's not scheduled , Insufficent resources or some other cloud)
    troubleshoot: kubectl describe pod <podName>.
+   - node had a disk presure ( That means that node is using too much disk space or is using disk space too fast. Automatically 
+     it will solve this .That is important to monitor because you  might to add more disk spaces )
+   - Node does not have a sufficient memory
+
 
    - CrashLoopBackOff (Some reason your container process is not starting successfully because of some code 
                        issue,configuration issue,application,images etc) contact with developer.
