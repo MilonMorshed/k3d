@@ -9,6 +9,8 @@ How to run your application on a multi cluster locally
 how to administer the k3d
 # To communicate between Kubectl and k8s cluster ,we need 1.kube/config file and 2. network 
 --------------------------------------------
+
+commented out multiple lines   command + k + c  and uncomment  ---> command + k + u 
 open -a docker ( If you using docker desktop)
 k3d cluster list
 k3d cluster start dev-cluster
