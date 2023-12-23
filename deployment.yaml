@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: myapp
-        image: k3d-my-registry:49552/mynginx
+        image: k3d-my-registry:49475/mynginx
         resources:
           requests:
             memory: "100Mi"

@@ -8,13 +8,24 @@ How to create registy locally
 How to run your application on a multi cluster locally
 how to administer the k3d
 # To communicate between Kubectl and k8s cluster ,we need 1.kube/config file and 2. network 
+
+Creating cluster :
+-----------------
+k3d cluster create -c dev-cluster.yaml
+- create a registry  # k3d registry create my-registry
+- Need to find which port is runnung your registry.
+    docker ps
+    docker ps -f name=my-registry
+
+k3d cluster delete dev-cluster
 --------------------------------------------
 
 commented out multiple lines   command + k + c  and uncomment  ---> command + k + u 
+
 open -a docker ( If you using docker desktop)
 k3d cluster list
 k3d cluster start dev-cluster
-kubetle cluster-info
+kubectle cluster-info
 curl -v telnet://localhost:6445 
 k3d kubeconfig get dev-cluster
 
